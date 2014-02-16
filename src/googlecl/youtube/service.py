@@ -20,6 +20,7 @@ __author__ = 'tom.h.miller@gmail.com (Tom Miller)'
 import gdata.youtube
 import logging
 import os
+import sys
 import googlecl.base
 import googlecl.service
 from googlecl.youtube import SECTION_HEADER
@@ -128,6 +129,7 @@ class YouTubeServiceCL(YouTubeService, googlecl.service.BaseServiceCL):
         entry = self.InsertVideoEntry(video_entry, path)
       except gdata.service.RequestError, err:
         LOG.error('Failed to upload video: %s' % err)
+        sys.exit(1)
       except gdata.youtube.service.YouTubeError, err:
         err_str = str(err)
         if err_str.find('path name or a file-like object') != -1:
@@ -138,6 +140,7 @@ class YouTubeServiceCL(YouTubeService, googlecl.service.BaseServiceCL):
           err_str += ('\nFor a list of valid categories, see '
                       'http://code.google.com/p/googlecl/wiki/Manual#YouTube')
         LOG.error(err_str)
+        sys.exit(1)
       else:
         LOG.info('Video uploaded: %s' % entry.GetHtmlLink().href)
 
